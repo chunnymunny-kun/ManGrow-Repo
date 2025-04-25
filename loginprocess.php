@@ -1,34 +1,61 @@
 <?php
-function loginme($email, $password)
-{
+function loginme($email, $password) {
     require 'database.php';
+    session_start();
 
-    // Prepared statement to prevent SQL injection
-    $stmt = mysqli_prepare($connection, "SELECT * FROM accountstbl WHERE email = ?");
-    mysqli_stmt_bind_param($stmt, "s", $email); // "s" indicates a string parameter
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    try {
+        // Prepared statement to prevent SQL injection
+        $stmt = $connection->prepare("SELECT * FROM accountstbl WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
 
-        // Password Verification (Important: Use password_verify with hashed passwords)
-        if ($password == $row["password"]) { // Replace with password_verify!
-            $_SESSION["login"] = true;
-            $_SESSION["name"] = $row["fullname"];
-            $_SESSION["email"] = $row["email"];
-            $_SESSION["accessrole"] = $row["accessrole"];
+            // Password Verification with hashed passwords
+            if (password_verify($password, $row["password"])) {
+                $_SESSION["login"] = true;
+                $_SESSION["user_id"] = $row["account_id"];
+                $_SESSION["name"] = $row["fullname"];
+                $_SESSION["email"] = $row["email"];
+                $_SESSION["accessrole"] = $row["accessrole"];
+                $_SESSION["profile_image"] = $row["profile_thumbnail"];
+                $_SESSION["city_municipality"] = $row["city_municipality"];
+                $_SESSION["barangay"] = $row["barangay"];
+                $_SESSION["organization"] = $row["organization"];
+                $_SESSION["bio"] = $row["bio"];
 
-            header("Location: index.php");
-            exit();
+                $_SESSION['response'] = [
+                    'status' => 'success',
+                    'msg' => 'Login successful! Welcome back.'
+                ];
+                
+                header("Location: index.php");
+                exit();
+            } else {
+                $_SESSION['response'] = [
+                    'status' => 'error',
+                    'msg' => 'Incorrect credentials! Please try again.'
+                ];
+                header("Location: login.php");
+                exit();
+            }
         } else {
-            echo "<script>alert('Incorrect username or password!');</script>";
-            return;
+            $_SESSION['response'] = [
+                'status' => 'error',
+                'msg' => 'Incorrect credentials! Please try again.'
+            ];
+            header("Location: login.php");
+            exit();
         }
-    } else {
-        echo "<script>alert('This user is not registered.');</script>";
-        return;
+    } catch (Exception $e) {
+        $_SESSION['response'] = [
+            'status' => 'error',
+            'msg' => 'Login error: ' . $e->getMessage()
+        ];
+        header("Location: login.php");
+        exit();
     }
-    mysqli_stmt_close($stmt); // close the statement.
 }
 ?>

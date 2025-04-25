@@ -58,12 +58,14 @@ header{
     align-items: center;
     justify-content:space-between;
     z-index: 999;
+    gap: 20px;
 }
 
 .header-logo span{
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    width:200px;
     gap: 10px;
     font-size: 20px;
     font-weight: 600;
@@ -71,14 +73,24 @@ header{
 
 nav{
     height:60px;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    
 }
 
 .nav-list{
     list-style:none;
-    margin:0;
+    margin:0 auto;
     padding:0;
     display: flex;
     gap:10px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
 .nav-list li{
@@ -118,8 +130,25 @@ nav{
 
 .userbox{
   display: flex;
-  align-items: center;
-  height:60px;
+  align-items: center;       
+  justify-content: center;   
+  height: 60px;              
+  max-width: 200px;
+  overflow: hidden;
+  padding: 0 10px;
+  position: relative;    
+}
+
+.userbox a {
+  display: inline-block;    
+  width: 100%;              
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: azure;
+  text-decoration: none;
+  text-align: center;       
+  line-height: 1.2;         
 }
 
 .userbox:hover{
@@ -127,37 +156,64 @@ nav{
   border-radius: 6px;
 }
 
-.profile-details{
-  position:fixed;
+.profile-details {
+  position: fixed;
   z-index: 999;
-  top:61px;
-  right:0;
+  top: 62px;
+  right: 20px; /* Added some right spacing */
   background: var(--secondarybase-clr);
-  border:1px solid var(--line-clr);
+  border: 1px solid var(--line-clr);
   border-radius: 6px;
-  width:300px;
-  height:200px;
-  padding:10px;
+  width: 250px;
+  padding: 15px; /* Increased padding */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Added subtle shadow */
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-.profile-details.close{
-  display:none;
+.profile-details.close {
+  display: none;
 }
 
-.details-box{
-  display:flex;
+.details-box {
+  display: flex;
   flex-direction: column;
-  height:90%;
-  width:100%;
+  gap: 8px; /* Added consistent gap between items */
 }
 
-.profile-details button{
-  width:100%;
-  margin-bottom: 20px;
+.details-box h2 {
+  margin: 0 0 5px 0; /* Adjusted heading margins */
+  font-size: 1.2rem;
+  color: var(--text-clr);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.profile-details p{
-  margin:0;
+.details-box p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  padding: 4px 0;
+  color: var(--text-clr);
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--line-clr); /* Subtle separator */
+}
+
+.profile-details button {
+  width: 100%;
+  padding: 8px;
+  background-color: var(--base-clr);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.profile-details button:hover {
+  background-color: var(--placeholder-text-clr);
 }
 
 .userbox a:focus-visible{
@@ -257,9 +313,12 @@ main p{
 #user-table-body td:nth-child(4), /* Email column */
 #user-table-body td:nth-child(5), /* Personal Email column */
 #user-table-body td:nth-child(7), /* Barangay column */
-#user-table-body td:nth-child(10), /* Organization column */
 #user-table-body td:nth-child(13) { /* Administrator column */
-  max-width: 200px;
+  max-width: 180px;
+}
+
+#user-table-body td:nth-child(10){ /* Organization column */
+  max-width:140px;
 }
 
 #accs-table th {
@@ -436,3 +495,33 @@ footer h3{
   footer #social-media-footer ul li:hover a .fa-twitter {
     color:#1DA1F2;
   }
+
+/* Flash message styles */
+.flash-container {
+  position: fixed;
+  top: 20px;
+  z-index: 1000;
+}
+
+.flash-message {
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  color: white;
+  animation: fadeOut 5s forwards;
+}
+
+.flash-success {
+  background-color: #4CAF50;
+}
+
+.flash-error {
+  background-color: #f44336;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; display: none; }
+}

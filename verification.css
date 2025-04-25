@@ -52,7 +52,7 @@ body{
     left:50%;
     transform: translate(-50%,-50%);
     width:30%;
-    height:500px;
+    min-height:200px;
     background: var(--accent-clr);
     background-size: cover;
     background-position: center;
@@ -82,6 +82,17 @@ body{
     line-height: 1.5em;
 }
 
+.content-mesg h3{
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.content-mesg h4{
+    text-align: center;
+    line-height: 1.5em;
+    font-weight: 400;
+}
+
 .verify-container .input-box{
     flex-grow:1;
     width:100%;
@@ -90,19 +101,7 @@ body{
     flex-direction: column;
 }
 
-.verify-container input{
-    padding:10px;
-    border: 1px solid var(--line-clr);
-    border-radius: 5px;
-    background: var(--secondarybase-clr);
-    color: var(--text-clr);
-    font-size: 1.2em;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
 .verify-container button{
-    width:60;
     padding:10px;
     background: var(--base-clr);
     color: azure;

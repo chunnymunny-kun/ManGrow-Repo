@@ -8,12 +8,16 @@ include 'database.php';
 
     $statusType = '';
     $statusMsg = '';
-
-    if(!empty($_SESSION['response'])){ 
-        $status = $_SESSION['response']['status']; 
-        $statusMsg = $_SESSION['response']['msg']; 
-        unset($_SESSION['response']); 
-    } 
+    //<!-- Flash Message Display -->
+    if(!empty($_SESSION['response'])): ?>
+    <div class="flash-container">
+        <div class="flash-message flash-<?= $_SESSION['response']['status'] ?>">
+            <?= $_SESSION['response']['msg'] ?>
+        </div>
+    </div>
+    <?php 
+    unset($_SESSION['response']); 
+    endif; 
     ?>
     <!-- Display status message -->
     <?php if(!empty($statusMsg)){ ?>

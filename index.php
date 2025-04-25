@@ -35,17 +35,23 @@
             <a href="#">About</a>
             <a href="#">Events</a>
             <a href="logout.php">Leaderboards</a>
-            <?php
+            <?php 
             if (isset($_SESSION["name"])) {
-                $loggeduser = $_SESSION["name"];
-                echo "<div class='userbox'><a href='#' id='login' onclick='LoginToggle()'>$loggeduser</a></div>"; // Display the name with a link to profile.php
+                // Show profile icon when logged in
+                echo '<div class="userbox" onclick="toggleProfilePopup(event)">';
+                if(isset($_SESSION['profile_image']) && !empty($_SESSION['profile_image'])) {
+                    echo '<img src="'.$_SESSION['profile_image'].'" alt="Profile Image" class="profile-icon">';
+                } else {
+                    echo '<div class="default-profile-icon"><i class="fas fa-user"></i></div>';
+                }
+                echo '</div>';
             } else {
-                echo "<a href='login.php'>Login</a>";    
+                // Show login link when not logged in
+                echo '<a href="login.php" class="login-link">Login</a>';
             }
             ?>
-            </div>
-        </nav>
-    </header>
+            </nav>
+        </header>
     <aside id="sidebar" class="close">  
         <ul>
             <li>
@@ -110,34 +116,34 @@
         </ul>
     </aside>
     <main>
-        <div class="profile-details close" id="profile-details">
-            <div class ="details-box">
-            <h2><?php 
-            if(isset($_SESSION["name"])){
-                $loggeduser = $_SESSION["name"];
-                echo $loggeduser; 
-            }else{
-                echo "";
-            }
-            ?></h2>
-            <p><?php
-             if(isset($_SESSION["email"])){
-                $email = $_SESSION["email"];
-                echo $email;
-            }else{
-                echo "";
-            }
-             ?></p>
-            <p><?php
-            if(isset($_SESSION["accessrole"])){
-                $accessrole = $_SESSION["accessrole"];
-                echo $accessrole;
-            }else{
-                echo "";
-            }
-            ?></p>
+        <?php if(!empty($_SESSION['response'])): ?>
+        <div class="flash-container">
+            <div class="flash-message flash-<?= $_SESSION['response']['status'] ?>">
+                <?= $_SESSION['response']['msg'] ?>
             </div>
-            <button type="button" name="logoutbtn" onclick="window.location.href='logout.php';">Log Out</button>
+        </div>
+        <?php 
+        unset($_SESSION['response']); 
+        endif; 
+        ?>
+            <!-- Profile Details Popup (positioned relative to header) -->
+        <div class="profile-details close" id="profile-details">
+            <div class="details-box">
+                <?php
+                if(isset($_SESSION['profile_image']) && !empty($_SESSION['profile_image'])) {
+                        echo '<img src="'.$_SESSION['profile_image'].'" alt="Profile Image" class="big-profile-icon">';
+                    } else {
+                        echo '<div class="big-default-profile-icon"><i class="fas fa-user"></i></div>';
+                    }
+                ?>
+                <h2><?= isset($_SESSION["name"]) ? $_SESSION["name"] : "" ?></h2>
+                <p><?= isset($_SESSION["email"]) ? $_SESSION["email"] : "" ?></p>
+                <p><?= isset($_SESSION["accessrole"]) ? $_SESSION["accessrole"] : "" ?></p>
+                <div class="profile-link-container">
+                    <a href="profileform.php" class="profile-link">Go to Profile <i class="fa fa-angle-double-right"></i></a>
+                </div>
+        </div>
+        <button type="button" name="logoutbtn" onclick="window.location.href='logout.php';">Log Out <i class="fa fa-sign-out" aria-hidden="true"></i></button>
         </div>
         <div class= "home-container">
             <section class="s1">
@@ -162,14 +168,14 @@
                 </div>
                 <div class="small-box">
                     <h3>Reference Links</h3>
-                    <a href="#">https://sambrix.com</a>
-                    <a href="#">https://sambrix.com</a>
-                    <a href="#">https://sambrix.com</a>
-                    <a href="#">https://sambrix.com</a>
-                    <a href="#">https://sambrix.com</a>
-                    <a href="#">https://sambrix.com</a>
-                    <a href="#">https://sambrix.com</a>
-                    <a href="#">https://sambrix.com</a>
+                    <a href="#">https://mangrove.com</a>
+                    <a href="#">https://mangrove.com</a>
+                    <a href="#">https://mangrove.com</a>
+                    <a href="#">https://mangrove.com</a>
+                    <a href="#">https://mangrove.com</a>
+                    <a href="#">https://mangrove.com</a>
+                    <a href="#">https://mangrove.com</a>
+                    <a href="#">https://mangrove.com</a>
                 </div>
             </section>
             <section class="s4">

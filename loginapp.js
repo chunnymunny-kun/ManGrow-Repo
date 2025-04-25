@@ -9,7 +9,7 @@ registerLink.addEventListener('click', () => {
     logregBox.classList.add('active');
     background.classList.add('register');
     containerBackground.classList.add('register');
-    document.title = 'Register';
+    document.title = 'Verify Account';
 });
 
 loginLink.addEventListener('click', () => {

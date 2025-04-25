@@ -36,36 +36,25 @@ mysqli_stmt_execute($statement);
 $result = mysqli_stmt_get_result($statement);
 
 if(mysqli_num_rows($result) > 0) {
-    // Data exists in the database
     $row = mysqli_fetch_assoc($result);
     $firstname = $row['firstname'];
     $lastname = $row['lastname'];
-    $tempemail = $row['email'];
+    $tempemail = $row['personal_email'];
+    $censoredTempEmail = censorEmail($tempemail);
     $messagetext = "We detected that you have an account with us. Please verify with your email address to continue.";
 
     ?>
-        <div class="verify-container">
-            <div class="content-header">
-            <h1>Verification</h1>
-            </div>
-            <div class="content-mesg">
-            <h3><?php echo htmlspecialchars($messagetext)?></h3>
-            <p name="firstname">Firstname: <?php echo htmlspecialchars($firstname); ?></p>
-            <p name="lastname">Lastname: <?php echo htmlspecialchars($lastname); ?></p>
-            <p name="tempemail">Email: <?php echo htmlspecialchars($tempemail); ?></p> 
-            </div>
-            <p>We will send an OTP to <span><?php echo htmlspecialchars($pemail); ?></span> for the verification of your account. Please enter the OTP code below.</p>
-            <div class="input-box">
-            <form action="" method="post" autocomplete="off">
-            <div><label for="pemail">Personal Email</label><br>
-            <input type="text" id="pemail" name="pemail" value="<?php echo htmlspecialchars($pemail); ?>" readonly/></div>
-            <div><label for="otp">OTP</label><br>
-            <input type="text" id="otp-input" name="otp" placeholder="Enter OTP" required /><button type="button" name="sendotp" onclick="sendOTP()">Send</button></div>
-            <div>
-            <button type="submit" id="otp-btn" name="verifybtn" class="loginbtn">Verify</button></div>
-            </form>
-            </div>           
+    <div class="verify-container">
+        <div class="content-header">
+                <h1>Verification</h1>
+                </div>
+                <div class="content-mesg">
+        <h3><?php echo htmlspecialchars($messagetext)?></h3>
+        <p name="firstname">Firstname: <?php echo htmlspecialchars($firstname); ?></p>
+        <p name="lastname">Lastname: <?php echo htmlspecialchars($lastname); ?></p>
+        <p name="tempemail">Email: <?php echo htmlspecialchars($censoredTempEmail); ?></p> 
         </div>
+        <p>We will send an email to <span><?php echo htmlspecialchars($censoredTempEmail); ?></span> for the verification of your account. Please check your inbox or spam to see our message.</p>
     <?php
 } else {
     // Data does not exist in the database
@@ -76,7 +65,7 @@ if(mysqli_num_rows($result) > 0) {
                 <h1>Verification</h1>
                 </div>       
                 <div class="content-mesg">
-                <h3><?php echo htmlspecialchars($messagetext)?></h3>
+                <h4><?php echo htmlspecialchars($messagetext)?></h4>
                 </div>
                 <div class="input-box">
                 <button type = "button" name="backbtn" onclick="window.location.href='login.php';">Close</button>
@@ -101,7 +90,19 @@ if ($firstname && $lastname && $email) {
 }
 */
 ?>
-
+<?php
+// Email censoring function
+function censorEmail($email) {
+    $parts = explode('@', $email);
+    if (count($parts) == 2) {
+        $username = $parts[0];
+        $domain = $parts[1];
+        $censored = substr($username, 0, 2) . '***@' . $domain;
+        return $censored;
+    }
+    return $email; // fallback if not a standard email format
+}
+?>
 
 <script src="emailotp.js"></script>
 </body>

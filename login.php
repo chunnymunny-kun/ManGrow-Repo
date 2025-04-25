@@ -6,7 +6,7 @@ session_start();
             $email = $_POST["loginemail"];
             $password = $_POST["loginpassword"];
             require_once 'loginprocess.php';
-            $result = loginme($email,$password);
+            loginme($email, $password);
         }
         if (isset($_POST["firstname"])) {
             $firstname = $_POST['firstname'];
@@ -35,6 +35,16 @@ session_start();
 </head>
 <body>
     <div class="background login"></div>
+    <?php if(!empty($_SESSION['response'])): ?>
+    <div class="flash-container">
+        <div class="flash-message flash-<?= $_SESSION['response']['status'] ?>">
+            <?= $_SESSION['response']['msg'] ?>
+        </div>
+    </div>
+    <?php 
+    unset($_SESSION['response']); 
+    endif; 
+    ?>
     <div class="returnbtn">
             <button type="button" name="backbtn" onclick="window.location.href='index.php';">X</button>
         </div>
@@ -74,13 +84,13 @@ session_start();
                     </div>
                     <button type="submit" name="logsubmit" class="loginbtn">Sign In</button>
                     <div class ="login-register">
-                        <p>Don't have an account? <a href="#" class="register-link">Sign up</a> </p>
+                        <p>Don't have an account? <a href="#" class="register-link">Let us verify</a> </p>
                     </div>
                 </form>
             </div>
             <div class="form-box register" id="register-form">
                 <form action="" method="post" autocomplete="off">
-                    <h2>Sign Up</h2>
+                    <h2>Verify Account</h2>
                     <h5>Let's verify your identity if you are locally registered to us.</h5>
                     <div class="input-box">
                         <span class="icon"><i class='bx bxs-user' ></i></span>
@@ -92,14 +102,6 @@ session_start();
                         <input type="text" name="lastname" required>
                         <label>Last Name</label>
                     </div>
-                    <div class="input-box">
-                        <span class="icon"><i class='bx bxs-envelope' ></i></span>
-                        <input type="email" name="pemail" placeholder=" " required>
-                        <label>Personal Email</label>
-                    </div>
-                    <div class="remember-forgot">
-                        <label><input type="checkbox"> I agree to the terms and conditions</label>
-                    </div>
                     <button type="submit" name="regsubmit" class="registerbtn">Verify</button>
                     <div class ="login-register">
                         <p>Already have an account? <a href="#" class="login-link">Sign in</a> </p>
@@ -108,7 +110,6 @@ session_start();
             </div>
         </div>
     </div>
-
     <script src="loginapp.js" type="text/Javascript"></script>
 </body>
 </html>

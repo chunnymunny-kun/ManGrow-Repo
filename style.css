@@ -96,36 +96,127 @@ header{
     font-size: 16px;
 }
 
-.profile-details{
-    position:fixed;
-    z-index: 999;
-    top:62px;
-    right:0;
+.profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--line-clr);
+}
+
+.big-profile-icon{
+    align-self: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--line-clr);
+}
+
+.default-profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--placeholder-text-clr);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+}
+
+.big-default-profile-icon {
+    align-self: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: var(--placeholder-text-clr);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+}
+
+/* Profile Link Styles */
+.profile-link {
+    display: block;
+    padding: 10px 15px;
+    text-align: center;
+    color: var(--base-clr);
+    text-decoration: none;
+    border-radius: 4px;
+    background-color: rgba(62, 123, 39, 0.1);
+    transition: all 0.3s;
+    border: 1px solid rgba(62, 123, 39, 0.3);
+}
+
+.profile-link:hover{
+    background-color: rgba(18,53,36);
+    color:azure;
+    transform: translateX(2px);
+}
+
+.profile-details {
+    position: fixed;
+    z-index: 1000;
+    top: 60px; /* Position below header */
+    right: 20px;
     background: var(--secondarybase-clr);
-    border:1px solid var(--line-clr);
+    border: 1px solid var(--line-clr);
     border-radius: 6px;
-    width:250px;
-    height:200px;
-    padding:10px;
+    width: 250px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.profile-details.close{
-    display:none;
+.profile-details.close {
+    display: none;
 }
 
-.details-box{
-    display:flex;
+.details-box {
+    display: flex;
     flex-direction: column;
-    height:90%;
-    width:100%;
+    gap: 8px; /* Added consistent gap between items */
+    margin-bottom: 15px; /* Space before button */
 }
 
-.profile-details button{
-    width:100%;
+.details-box h2 {
+    margin: 0 0 5px 0; /* Adjusted heading margins */
+    font-size: 1.2rem;
+    color: var(--text-clr);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.profile-details p{
-    margin:0;
+.details-box p {
+    margin: 0;
+    padding: 4px 0;
+    color: var(--text-clr);
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--line-clr); /* Subtle separator */
+}
+
+.profile-details button {
+    display: block;
+    width:100%;
+    padding: 10px 15px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--base-clr);
+    text-decoration: none;
+    border-radius: 4px;
+    background-color: rgba(62, 123, 39, 0.1);
+    transition: all 0.3s;
+    border: 1px solid rgba(62, 123, 39, 0.3);
+}
+
+.profile-details button:hover {
+    background: rgba(18,53,36);
+    transform: translateX(2px);
+    color:azure;
 }
 
 .navbar a:focus-visible{
@@ -154,9 +245,11 @@ header{
 }
 
 .navbar .userbox{
+    cursor: pointer;
     display: flex;
     align-items: center;
-    height:60px;
+    height: 60px;
+    padding: 0 10px;
 }
 
 .navbar .userbox:hover{
@@ -841,6 +934,39 @@ footer h3{
     color:#1DA1F2;
   }
   
+/* Flash message styles */
+.flash-container {
+    position: fixed;
+    top: 20px;
+    left:50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+  }
+  
+  .flash-message {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    color: white;
+    animation: fadeOut 5s forwards;
+  }
+  
+  .flash-success {
+    background-color: #4CAF50;
+  }
+  
+  .flash-error {
+    background-color: #f44336;
+  }
+  
+  
+  @keyframes fadeOut {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+  }
+
 
 /* mobile - responsiveness */
 @media(max-width:800px){

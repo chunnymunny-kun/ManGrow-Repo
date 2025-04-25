@@ -46,25 +46,32 @@ if (isset($_POST['importSubmit'])) {
             }
             fclose($csvData);
 
-            $res_status = 'success'; 
-            $res_msg = 'Members data has been imported successfully.'; 
-        }else{ 
-            $res_status = 'danger'; 
-            $res_msg = 'Please select a valid CSV file.'; 
+            if (!$error) {
+                $_SESSION['response'] = [
+                    'status' => 'success',
+                    'msg' => 'Members data has been imported successfully.'
+                ];
+            } else {
+                $_SESSION['response'] = [
+                    'status' => 'error',
+                    'msg' => 'Error importing some records. Please check your CSV file.'
+                ];
+            }
+        } else { 
+            $_SESSION['response'] = [
+                'status' => 'error',
+                'msg' => 'Please select a valid CSV file.'
+            ];
         } 
-    }else{ 
-        $res_status = 'danger'; 
-        $res_msg = 'Something went wrong, please try again.'; 
+    } else { 
+        $_SESSION['response'] = [
+            'status' => 'error',
+            'msg' => 'Something went wrong, please try again.'
+        ];
     } 
- 
-    // Store status in SESSION 
-    $_SESSION['response'] = array( 
-        'status' => $res_status, 
-        'msg' => $res_msg 
-    ); 
 } 
- 
-// Redirect to the listing page 
+
+// Redirect to admin page
 header("Location: adminpage.php"); 
 exit(); 
  
