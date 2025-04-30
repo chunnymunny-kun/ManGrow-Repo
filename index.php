@@ -32,9 +32,9 @@
             <button type="submit"><i class='bx bx-search-alt-2'></i></button> 
         </form>
         <nav class = "navbar">
-            <a href="#">About</a>
-            <a href="#">Events</a>
-            <a href="logout.php">Leaderboards</a>
+            <a href="about.php">About</a>
+            <a href="events.php">Events</a>
+            <a href="leaderboards.php">Leaderboards</a>
             <?php 
             if (isset($_SESSION["name"])) {
                 // Show profile icon when logged in
@@ -149,7 +149,7 @@
             <section class="s1">
             <div class ="background-img"><img src="images/mangrove.webp" alt ="Mangrove">
             <h1>ManGrow: Mangrove Conservation and Eco-Tracking System with 2D Mapping</h1>
-            <button type="button" class="abt-project" onclick="window.location.href='project.php';"><span class="abt-project-span"></span>About Project</button>
+            <button type="button" class="abt-project" onclick="window.location.href='about.php';"><span class="abt-project-span"></span>About Project</button>
             </div>
             </section>
             <br>
@@ -162,21 +162,56 @@
             </section>
             <section class="s3">
             <div class="two">
-                <div class="medium-box">
+            <div class="community-hub">
+                <div class="hub-grid">
+                    <!-- About -->
+                    <div class="grid-item" data-modal="modal-one">
+                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
+                        <div class="item-content">
+                            <h3>Community News</h3>
+                            <p>Latest updates and announcements</p>
+                            <span class="see-more">Explore →</span>
+                        </div>
+                    </div>
+                    <!-- About -->
+                    <div class="grid-item" data-modal="modal-two">
+                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
+                        <div class="item-content">
+                            <h3>Upcoming Events</h3>
+                            <p>Join our next gathering</p>
+                            <span class="see-more">Explore →</span>
+                        </div>
+                    </div>
+                    <!-- About -->
+                    <div class="grid-item" data-modal="modal-three">
+                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
+                        <div class="item-content">
+                            <h3>Success Stories</h3>
+                            <p>Inspiring member journeys</p>
+                            <span class="see-more">Explore →</span>
+                        </div>
+                    </div>
+                    <!-- About -->
+                    <div class="grid-item" data-modal="modal-four">
+                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
+                        <div class="item-content">
+                            <h3>Helpful Resources</h3>
+                            <p>Tools and guides</p>
+                            <span class="see-more">Explore →</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            
+            <!-- Modal for second section -->
+            <div class="modal" id="modal-template">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <div class="modal-body">
+                        <!-- Content will be injected here via JavaScript -->
+                    </div>
                 </div>
-                <div class="small-box">
-                    <h3>Reference Links</h3>
-                    <a href="#">https://mangrove.com</a>
-                    <a href="#">https://mangrove.com</a>
-                    <a href="#">https://mangrove.com</a>
-                    <a href="#">https://mangrove.com</a>
-                    <a href="#">https://mangrove.com</a>
-                    <a href="#">https://mangrove.com</a>
-                    <a href="#">https://mangrove.com</a>
-                    <a href="#">https://mangrove.com</a>
-                </div>
+            </div>
             </section>
             <section class="s4">
             <div class="three">

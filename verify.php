@@ -40,7 +40,7 @@ if(isset($_GET['token'])) {
                 $stmt = $connection->prepare($insertQuery);
                 $stmt->bind_param(
                     "ssssssss",
-                    $fullname,  // Use the combined name here
+                    $fullname,
                     htmlspecialchars($account['email']),
                     htmlspecialchars($account['personal_email']),
                     $hashedPassword,

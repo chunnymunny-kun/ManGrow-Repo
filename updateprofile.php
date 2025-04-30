@@ -14,14 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
         exit();
     }
 
-    // Get and sanitize fields
     $organization = htmlspecialchars(trim($_POST['organization'] ?? ''));
     $bio = htmlspecialchars(trim($_POST['bio'] ?? ''));
     
-    // Process password if provided
+    // Process password to be updated if provided
     $password_update = '';
     $password_param = null;
-    $types = 'ssi'; // Default types for organization, bio, user_id
+    $types = 'ssi';
     
     if (!empty($_POST['password'])) {
         if ($_POST['password'] !== $_POST['confirm-password']) {
@@ -29,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
             header("Location: profileform.php");
             exit();
         }
-        
+        //only requires letter and numbers 
         if (strlen($_POST['password']) < 8 || !preg_match('/[A-Za-z]/', $_POST['password']) || !preg_match('/[0-9]/', $_POST['password'])) {
             $_SESSION['response']['msg'] = "Password must be 8-20 chars with letters and numbers";
             header("Location: profileform.php");
@@ -38,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
         
         $password_update = ', password = ?';
         $password_param = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $types = 'sssi'; // Added 's' for password
+        $types = 'sssi';
     }
 
     // Build query and parameters
@@ -48,10 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
         $stmt = $connection->prepare($query);
         
         if ($password_param !== null) {
-            // Bind parameters with password
             $stmt->bind_param($types, $organization, $bio, $password_param, $user_id);
         } else {
-            // Bind parameters without password
             $stmt->bind_param($types, $organization, $bio, $user_id);
         }
         

@@ -1,16 +1,12 @@
-function importFormToggle(ID){
+function importFormToggle(ID) {
     var form = document.getElementById(ID);
-    if (form.style.display === "none") {
-        form.style.display = "block";
-    } else {
-        form.style.display = "none";
-    }
+    form.style.display = form.style.display === "none" ? "block" : "none";
 }
 
-function getBarangays() {
-    let cityDropdown = document.forms['select-citymunicipality'].cmfilter;
+function getBarangays(cityDropdown, tableType) {
     let selectedCity = cityDropdown.value;
-    let barangayDropdown = document.forms['select-citymunicipality'].bfilter;
+    let form = cityDropdown.closest('form');
+    let barangayDropdown = form.querySelector('.barangay-filter');
     
     // Reset barangay dropdown when city changes
     barangayDropdown.innerHTML = '<option value="">All</option>';
@@ -18,9 +14,10 @@ function getBarangays() {
     if(selectedCity.trim() === "") {
         barangayDropdown.disabled = true;
         barangayDropdown.selectedIndex = 0;
-        filtertable(); // Show all records when no city selected
+        filterTable(tableType);
         return false;
     }
+    
     // Enable barangay dropdown and fetch barangays
     barangayDropdown.disabled = false;
     
@@ -44,7 +41,7 @@ function getBarangays() {
         });
 
         barangayDropdown.innerHTML = out;
-        filtertable(); // Filter table after loading barangays
+        filterTable(tableType);
     })
     .catch(error => {
         console.error('Error:', error);
@@ -52,25 +49,39 @@ function getBarangays() {
     });
 }
 
-function filtertable() {
-    let cityDropdown = document.forms['select-citymunicipality'].cmfilter;
-    let barangayDropdown = document.forms['select-citymunicipality'].bfilter;
-    let selectedCity = cityDropdown.value;
-    let selectedBarangay = barangayDropdown.value;
+function filterTable(tableType) {
+    let form = document.querySelector(`form[name="${tableType}-account-filters"]`);
+    if (!form) {
+        console.error(`Form for ${tableType} accounts not found`);
+        return;
+    }
+    
+    let cityDropdown = form.querySelector('.city-filter');
+    let barangayDropdown = form.querySelector('.barangay-filter');
+    let selectedCity = cityDropdown ? cityDropdown.value : '';
+    let selectedBarangay = barangayDropdown ? barangayDropdown.value : '';
+    
+    // Get current page from URL
+    let urlParams = new URLSearchParams(window.location.search);
+    let currentPage = urlParams.get('page') || 1;
 
-    let tableBody = document.getElementById('user-table-body');
-    tableBody.innerHTML = '<tr><td colspan="13" class="text-center">Loading...</td></tr>';
+    let tableBody = document.getElementById(`${tableType}-accounts-body`);
+    if (!tableBody) {
+        console.error(`Table body for ${tableType} accounts not found`);
+        return;
+    }
+    
+    tableBody.innerHTML = '<tr><td colspan="' + (tableType === 'temp' ? 12 : 10) + '" class="text-center">Loading...</td></tr>';
 
-    // Build the fetch URL based on selections
-    let url = 'adminshowtabledata.php?action=filter';
-    // Only add city parameter if a specific city is selected
+    // Build the fetch URL with pagination
+    let url = `adminshowtabledata.php?action=filter&table=${tableType}&page=${currentPage}`;
     if (selectedCity) {
         url += `&city=${encodeURIComponent(selectedCity)}`;
     }
-    // Only add barangay parameter if a specific barangay is selected
     if (selectedBarangay) {
         url += `&barangay=${encodeURIComponent(selectedBarangay)}`;
     }
+    
     fetch(url)
     .then(response => {
         if (!response.ok) {
@@ -82,41 +93,65 @@ function filtertable() {
         if (!data || !Array.isArray(data)) {
             throw new Error('Invalid data format received');
         }
-        updateTable(data);
+        updateTable(data, tableType);
     })
     .catch(error => {
         console.error('Error:', error);
-        tableBody.innerHTML = `<tr><td colspan="13" class="text-center">Error loading data: ${error.message}</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="${tableType === 'temp' ? 12 : 10}" class="text-center">Error loading data: ${error.message}</td></tr>`;
     });
 }
 
-function updateTable(data) {
-    let tableBody = document.getElementById('user-table-body');
+function updateTable(data, tableType) {
+    let tableBody = document.getElementById(`${tableType}-accounts-body`);
+    if (!tableBody) return;
+    
     let html = '';
     
     if (data.length === 0) {
-        html = '<tr><td colspan="13" class="text-center">No records found</td></tr>';
+        html = `<tr><td colspan="${tableType === 'temp' ? 12 : 10}" class="text-center">No records found</td></tr>`;
     } else {
         data.forEach(item => {
-            html += `
-                <tr>
-                    <td>${item.tempacc_id || ''}</td>
-                    <td>${item.firstname || ''}</td>
-                    <td>${item.lastname || ''}</td>
-                    <td>${item.email || ''}</td>
-                    <td>${item.personal_email || ''}</td>
-                    <td>${item.password || ''}</td>
-                    <td>${item.barangay || ''}</td>
-                    <td>${item.city_municipality || ''}</td>
-                    <td>${item.accessrole || ''}</td>
-                    <td>${item.organization || ''}</td>
-                    <td>${item.is_verified || ''}</td>
-                    <td>${item.import_date || ''}</td>
-                    <td>${item.imported_by || ''}</td>
-                </tr>
-            `;
+            if (tableType === 'temp') {
+                html += `
+                    <tr>
+                        <td>${item.tempacc_id || ''}</td>
+                        <td>${item.firstname || ''}</td>
+                        <td>${item.lastname || ''}</td>
+                        <td>${item.email || ''}</td>
+                        <td>${item.personal_email || ''}</td>
+                        <td>${item.barangay || ''}</td>
+                        <td>${item.city_municipality || ''}</td>
+                        <td>${item.accessrole || ''}</td>
+                        <td>${item.organization || ''}</td>
+                        <td>${item.is_verified || ''}</td>
+                        <td>${item.import_date || ''}</td>
+                        <td>${item.imported_by || ''}</td>
+                    </tr>
+                `;
+            } else {
+                html += `
+                    <tr>
+                        <td>${item.account_id || ''}</td>
+                        <td>${item.fullname || ''}</td>
+                        <td>${item.email || ''}</td>
+                        <td>${item.personal_email || ''}</td>
+                        <td>${item.barangay || ''}</td>
+                        <td>${item.city_municipality || ''}</td>
+                        <td>${item.accessrole || ''}</td>
+                        <td>${item.organization || ''}</td>
+                        <td>${item.date_registered || ''}</td>
+                        <td>${item.bio ? (item.bio.length > 50 ? item.bio.substring(0, 50) + '...' : item.bio) : ''}</td>
+                    </tr>
+                `;
+            }
         });
     }
     
     tableBody.innerHTML = html;
 }
+
+// Initialize tables on page load
+document.addEventListener('DOMContentLoaded', function() {
+    filterTable('temp');
+    filterTable('verified');
+});
