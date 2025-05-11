@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bataan Mangrove Map</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+    .map-title {
+      position: absolute;
+      top: 10px;
+      left: 50px;
+      z-index: 1000;
+      background: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+<div class="map-title">Bataan Mangrove Areas</div>
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+  // Initialize map centered on Bataan coastline
+  var map = L.map('map').setView([14.678, 120.540], 13);
+
+  // Add multiple base map layers
+  var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+  });
+
+  var satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: '© Esri'
+  });
+
+  // Add mangrove data layer
+  var mangroveLayer = L.layerGroup();
+
+  // Sample mangrove areas in Bataan (replace with real coordinates)
+  var mangroveAreas = [
+    {
+      name: "Abucay Mangrove Reserve",
+      coords: [
+        [14.735, 120.535],
+        [14.736, 120.538],
+        [14.733, 120.540],
+        [14.731, 120.537]
+      ],
+      status: "Protected"
+    },
+    {
+      name: "Balanga Coastal Mangroves",
+      coords: [
+        [14.685, 120.525],
+        [14.687, 120.530],
+        [14.683, 120.532],
+        [14.680, 120.528]
+      ],
+      status: "Restoration Area"
+    }
+  ];
+
+  // Add mangrove polygons to layer
+  mangroveAreas.forEach(function(area) {
+    var polygon = L.polygon(area.coords, {
+      color: '#2d6a4f',
+      fillColor: '#52b788',
+      fillOpacity: 0.7,
+      weight: 2
+    }).bindPopup(`<b>${area.name}</b><br>Status: ${area.status}`);
+    
+    polygon.addTo(mangroveLayer);
+  });
+
+  // Add sample mangrove trees
+  var mangroveTrees = [
+    {latlng: [14.732, 120.537], id: "MNG-ABU-001", species: "Rhizophora"},
+    {latlng: [14.684, 120.529], id: "MNG-BAL-001", species: "Avicennia"}
+  ];
+
+  mangroveTrees.forEach(function(tree) {
+    L.marker(tree.latlng, {
+      icon: L.divIcon({
+        className: 'mangrove-marker',
+        html: '🌴',
+        iconSize: [30, 30]
+      })
+    }).bindPopup(`<b>${tree.id}</b><br>Species: ${tree.species}`).addTo(mangroveLayer);
+  });
+
+  // Add layers control
+  var baseLayers = {
+    "Street Map": osm,
+    "Satellite": satellite
+  };
+
+  var overlays = {
+    "Mangrove Areas": mangroveLayer
+  };
+
+  L.control.layers(baseLayers, overlays).addTo(map);
+
+  // Add scale control
+  L.control.scale().addTo(map);
+
+  // Set default layers
+  osm.addTo(map);
+  mangroveLayer.addTo(map);
+
+  // Add attribution
+  map.attributionControl.addAttribution('Mangrove data © Local Conservation Department');
+
+</script>
+</body>
+</html>

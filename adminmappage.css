@@ -1,0 +1,122 @@
+:root{
+    --base-clr: #123524;
+    --line-clr: indigo;
+    --secondarybase-clr: lavenderblush;
+    --text-clr: #222533;
+    --accent-clr: #EFE3C2;
+    --secondary-text-clr: #123524;
+    --placeholder-text-clr:#3E7B27;
+}
+
+header{
+    z-index: 10000;
+}
+
+.map-container {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+    height: calc(100vh - 54px);
+    overflow: hidden;
+}
+
+.map-box {
+    position: relative;
+    border: 1px solid black;
+    height: 100%;
+    width: 60%;
+    overflow: hidden;
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right:0;
+    bottom:0;
+}
+
+/* Optional responsive height */
+@media (max-width: 768px) {
+    #map {
+        height: 400px;
+    }
+    .map-box, .adminmap-main {
+        width: 100%;
+        height: 50vh;
+    }
+}
+
+.adminmap-main {
+    width: 40%;
+    padding: 20px;
+    background: var();
+    border-left: 1px solid #ddd;
+    overflow-y: auto;
+    height: calc(100vh - 54px); /* Full height minus header */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.admin-profile, .quick-actions, .stats-dashboard, .recent-activity {
+    background: azure;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.action-btn {
+    padding: 10px;
+    background: #2d6a4f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: left;
+}
+
+
+.action-btn:hover{
+    background: var(--base-clr);
+}
+.action-btn i {
+    margin-right: 8px;
+}
+
+.stat-cards {
+    display: flex;
+    gap: 10px;
+}
+
+.stat-card {
+    flex: 1;
+    background: azure;
+    filter: brightness(80%);
+    border:1px solid var(--base-clr);
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.stat-card h4 {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+}
+
+.stat-card p {
+    margin: 0;
+    font-weight: bold;
+    color: #2d6a4f;
+}
+
+.recent-activity ul {
+    padding-left: 20px;
+    margin: 10px 0 0 0;
+}

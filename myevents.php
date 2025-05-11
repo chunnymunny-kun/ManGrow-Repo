@@ -1,7 +1,7 @@
 <!--
 <?php
     session_start();
-
+    include 'database.php';
     if(isset($_SESSION["name"])){
         $loggeduser = $_SESSION["name"];
     }
@@ -18,12 +18,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to ManGrow</title>
+    <title>Events</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="events.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script type ="text/javascript" src ="app.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 </head>
 <body>
     <header>
@@ -33,7 +35,7 @@
         </form>
         <nav class = "navbar">
             <a href="about.php">About</a>
-            <a href="events.php">Events</a>
+            <a href="events.php" class="active">Events</a>
             <a href="leaderboards.php">Leaderboards</a>
             <?php 
             if (isset($_SESSION["name"])) {
@@ -61,7 +63,7 @@
                 </button>
             </li>
             <hr>
-            <li class="active">
+            <li>
                 <a href="index.php" tabindex="-1">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M240-200h120v-200q0-17 11.5-28.5T400-440h160q17 0 28.5 11.5T600-400v200h120v-360L480-740 240-560v360Zm-80 0v-360q0-19 8.5-36t23.5-28l240-180q21-16 48-16t48 16l240 180q15 11 23.5 28t8.5 36v360q0 33-23.5 56.5T720-120H560q-17 0-28.5-11.5T520-160v-200h-80v200q0 17-11.5 28.5T400-120H240q-33 0-56.5-23.5T160-200Zm320-270Z"/></svg>
                     <span>Home</span>
@@ -125,6 +127,7 @@
                     <?php
                 }
             ?>
+        </ul>
     </aside>
     <main>
         <?php if(!empty($_SESSION['response'])): ?>
@@ -142,7 +145,7 @@
             <div class="details-box">
                 <?php
                 if(isset($_SESSION['profile_image']) && !empty($_SESSION['profile_image'])) {
-                        echo '<img src="'.$_SESSION['profile_image'].'" alt="Profile Image" class="big-profile-icon">';
+                        echo '<img src="'.$_SESSION['profile_image'].'" alt='.$_SESSION['profile_image'].' class="big-profile-icon">';
                     } else {
                         echo '<div class="big-default-profile-icon"><i class="fas fa-user"></i></div>';
                     }
@@ -154,158 +157,132 @@
                 <div class="profile-link-container">
                     <a href="profileform.php" class="profile-link">Edit Profile <i class="fa fa-angle-double-right"></i></a>
                 </div>
-        </div>
+                </div>
         <button type="button" name="logoutbtn" onclick="window.location.href='logout.php';">Log Out <i class="fa fa-sign-out" aria-hidden="true"></i></button>
         </div>
-        <div class= "home-container">
-            <section class="s1">
-            <div class ="background-img"><img src="images/mangrove.webp" alt ="Mangrove">
-            <h1>ManGrow: Mangrove Conservation and Eco-Tracking System with 2D Mapping</h1>
-            <button type="button" class="abt-project" onclick="window.location.href='about.php';"><span class="abt-project-span"></span>About Project</button>
-            </div>
-            </section>
-            <br>
-            <section class="s2">
-            <div class="one">
-                <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. 
-                    We use technology such as GIS-powered mapping with eco-tracking features and promote community engagement to establish sustainable mangrove conservation. 
-                    The technology enables mangrove ecosystem protection and strengthens local populations so they actively engage in conservation work.</p>
-                </div>
-            </section>
-            <section class="s3">
-            <div class="two">
-            <div class="community-hub">
-                <div class="hub-grid">
-                    <!-- About -->
-                    <div class="grid-item" data-modal="modal-one">
-                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
-                        <div class="item-content">
-                            <h3>Community News</h3>
-                            <p>Latest updates and announcements</p>
-                            <span class="see-more">Explore →</span>
-                        </div>
-                    </div>
-                    <!-- About -->
-                    <div class="grid-item" data-modal="modal-two">
-                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
-                        <div class="item-content">
-                            <h3>Upcoming Events</h3>
-                            <p>Join our next gathering</p>
-                            <span class="see-more">Explore →</span>
-                        </div>
-                    </div>
-                    <!-- About -->
-                    <div class="grid-item" data-modal="modal-three">
-                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
-                        <div class="item-content">
-                            <h3>Success Stories</h3>
-                            <p>Inspiring member journeys</p>
-                            <span class="see-more">Explore →</span>
-                        </div>
-                    </div>
-                    <!-- About -->
-                    <div class="grid-item" data-modal="modal-four">
-                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
-                        <div class="item-content">
-                            <h3>Helpful Resources</h3>
-                            <p>Tools and guides</p>
-                            <span class="see-more">Explore →</span>
-                        </div>
-                    </div>
-                </div>
+        <!-- events page container-->
+        <div class="events-container">
+            <!-- Page Title Section -->
+            <div class="page-title">
+                <h1><span class="man">Man</span><span class="grow">Grow</span> Events</h1>
             </div>
 
-            <!-- Modal for second section -->
-            <div class="modal" id="modal-template">
+            <!-- Dual-Column Layout -->
+            <div class="events-content">
+                
+                <!-- Left Column - Filters -->
+                <div class="events-filters">
+                    <div class="filter-section">
+                        <h2>Filters</h2>
+                        <div class="filter-group">
+                            <label>Event Type:</label>
+                            <select>
+                                <option>All Activities</option>
+                                <option>Planting Events</option>
+                                <option>Status Events</option>
+                                <option>Announcements</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Date Range:</label>
+                            <div class="date-inputs">
+                                <input type="date" id="start-date">
+                                <span>to</span>
+                                <input type="date" id="end-date">
+                            </div>
+                        </div>
+                        <button class="apply-filters">Apply Filters</button>
+                    </div>
+
+                    <div class="quick-links">
+                        <h2>Quick Actions</h2>
+                        <?php
+                        if(isset($_SESSION['accessrole'])){
+                            if($_SESSION['accessrole'] == 'Resident' && $_SESSION['organization'] == 'N/A'){
+                                echo '';
+                            }
+                            else{
+                        ?><button class="create-event" onclick="window.location.href = `create_event.php?organization=${encodeURIComponent('<?php echo $_SESSION['organization'];?>')}`;">
+                            <i class="fas fa-plus"></i> Create New Event
+                        </button><?php
+                        }}?>
+                        <button class="my-events">
+                            <i class="fas fa-user"></i> My Events
+                        </button>
+                    </div>
+                    <button class="my-events" onclick="window.location.href = 'events.php';" style="width:fit-content;">
+                            <i class="fas fa-user"></i> Back
+                        </button>
+                </div>
+
+                <!-- Right Column - Events Feed -->
+            <div class="events-feed">
+            <?php   
+                if(isset($_SESSION['name'])) {
+                    $author = $_SESSION['name'];
+                }
+                $query = "SELECT * FROM eventstbl 
+                          WHERE author = ?;";
+                $stmt = $connection->prepare($query);
+                $stmt->bind_param("s", $author);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                if (mysqli_num_rows($result) > 0) {
+                    while($items = mysqli_fetch_assoc($result)) {
+                        // Determine which date to display based on program_type
+                        $displayDate = ($items['program_type'] === 'Announcement') 
+                            ? $items['created_at'] 
+                            : $items['start_date'];
+                        
+                        // Format the date
+                        $formattedDate = date("F j, Y", strtotime($displayDate));
+                        $formattedTime = ($items['program_type'] === 'Announcement')
+                            ? '' // No time for announcements
+                            : ' | ' . date("g:i A", strtotime($displayDate));
+                
+                        echo '
+                            <div class="event-post">
+                                <div class="event-header">
+                                    <span class="event-date">'.$formattedDate.$formattedTime.'</span>
+                                    <span class="event-author">Posted by: '.$items['organization'].'</span>
+                                </div>
+                                <h3>'.$items['title'];
+                        
+                        // Only show location if not an announcement
+                        if ($items['program_type'] !== 'Announcement') {
+                            echo ' at Brgy. '.$items['barangay'];
+                        }
+                        
+                        ?> '</h3>
+                        <?php if($items['is_approved'] == 'Disapproved'){ ?>
+                                <div class="event-image">
+                                    <img src="<?php echo $items['thumbnail'] ?>" alt="<?php echo $items['thumbnail_data'] ?>" style="filter: brightness(0.6);">
+                                </div>
+                                <p class="event-desc"><?php echo $items['description'] ?></p>
+                                <div class="event-footer" style="background:rgba(123, 49, 39, 0.4);">
+                                    <p style="text-align:justify;padding:5px 15px;box-sizing:border-box;width:75%;">Note from <strong><?php echo $items['approved_by'] . '</strong>: <br>' . $items['disapproval_note'] . '<h2>' . $items['approval_date'] . '</h2>'?>
+                        <?php } else{ ?>
+                                <div class="event-image">
+                                    <img src="<?php echo $items['thumbnail'] ?>" alt="<?php echo $items['thumbnail_data'] ?>">
+                                </div>
+                                <p class="event-desc"><?php echo $items['description'] ?></p>
+                                <div class="event-footer"></div>
+                        <?php } echo '</div>
+                            </div>';
+                    }
+                } else {
+                    echo '<div class="event-post">No events found...</div>';
+                }
+            ?>
+
+            <div id="event-modal" class="event-modal">
                 <div class="modal-content">
                     <span class="close-modal">&times;</span>
-                    <div class="modal-body">
-                        <!-- Content will be added here via JavaScript -->
+                    <div id="modal-body">
+                        <!-- Content will be dynamically inserted here -->
                     </div>
                 </div>
             </div>
-            </section>
-            <section class="s4">
-            <div class="three">
-                <div  class="three-header"><h1>Expect the latest from our community hub</h1></div>
-                <div class="programs-box">
-                    <div class="programs-details">
-                        <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
-                    </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
-                    </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
-                    </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
-                    </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
-                    </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>  
-                </div>
-            </div>
-            <div class="view-more">
-                    <button type="button" class="view-more-btn" onclick="window.location.href='project.php';">View More <span><i class="fas fa-angle-double-right"></i></span></button>
-                </div>
-            </section>
-            <section class="s5">
-            <div class="four">
-            <div  class="three-header"><h1>Your awareness can save the environment!</h1></div>
-            <p style="text-align:center; width:1400px; margin:1rem auto;">We at the ManGrow will encourage you to report unusual activities that might negatively affect the development of the mangroves in your area. In case of that happening, we are actively watching to ensure that your response will reach the authorities in time.</p>
-            </div>
-            </section>
         </div>
     </main>
     <footer>
@@ -333,5 +310,47 @@
                     <p>This website is developed by ManGrow. All Rights Reserved.</p>
                 </div>
             </footer>
+            <script type="text/javascript" src="events.js"></script>
+            <script>
+        document.getElementById('qrForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent form submission
+
+            const text = document.getElementById('text').value;
+            const qrCodeContainer = document.getElementById('qrcode');
+
+            // Clear any existing QR code
+            qrCodeContainer.innerHTML = '';
+
+            // Create a canvas element
+            const canvas = document.createElement('canvas');
+            qrCodeContainer.appendChild(canvas);
+
+            // Generate the QR code on the canvas
+            QRCode.toCanvas(canvas, text, {
+                width: 300,
+                margin: 1,
+                color: {
+                    dark: '#000000', // Black
+                    light: '#ffffff' // White
+                }
+            }, function (error) {
+                if (error) {
+                    console.error(error);
+                    return;
+                }
+
+                // Add the logo to the center of the QR code
+                const ctx = canvas.getContext('2d');
+                const logo = new Image();
+                logo.src = 'images/mangrow-logo.png'; // Replace with the path to your logo image
+                logo.onload = function () {
+                    const logoSize = 60; // Size of the logo
+                    const x = (canvas.width - logoSize) / 2;
+                    const y = (canvas.height - logoSize) / 2;
+                    ctx.drawImage(logo, x, y, logoSize, logoSize);
+                };
+            });
+        });
+    </script>
 </body>
 </html>

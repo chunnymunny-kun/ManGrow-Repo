@@ -63,7 +63,7 @@ function toggleProfilePopup(e) {
     }
 }
 
-function togglePasswordVisibility(inputId = 'password', iconClass = 'toggle-password') {
+function togglePasswordVisibility(inputId, iconClass = 'toggle-password') {
     const passwordInput = document.getElementById(inputId);
     const toggleBtn = document.querySelector(`.${iconClass} i`);
     

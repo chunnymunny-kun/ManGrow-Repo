@@ -1,11 +1,20 @@
 <?php
     session_start();
     
-    if(isset($_SESSION["email"])){
-        $email = $_SESSION["email"];
-    }
     if(isset($_SESSION["accessrole"])){
-        $accessrole = $_SESSION["accessrole"];
+        if(isset($_SESSION["fullname"])){
+            $email = $_SESSION["fullname"];
+        }
+        if(isset($_SESSION["accessrole"])){
+            $accessrole = $_SESSION["accessrole"];
+        }
+    }else{
+        if(isset($_SESSION["email"])){
+            $email = $_SESSION["email"];
+        }
+        if(isset($_SESSION["accessrole"])){
+            $accessrole = $_SESSION["accessrole"];
+        }
     }
 ?>
 <!DOCTYPE html>

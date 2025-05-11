@@ -108,6 +108,6 @@ if (isset($_POST['importSubmit'])) {
 } 
 
 // Redirect to admin page
-header("Location: adminpage.php"); 
+header("Location: adminaccspage.php"); 
 exit();
 ?>

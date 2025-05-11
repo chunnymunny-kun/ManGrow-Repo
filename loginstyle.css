@@ -403,3 +403,48 @@ body{
     80% { opacity: 1; }
     100% { opacity: 0; display: none; }
   }
+
+
+@media (max-width: 800px) {
+        .content, .logo, .content-mesg, .socials{
+            display: none;
+        }
+
+        .login-container {
+            width: 90%; /* More appropriate for mobile */
+            height: auto; /* Flexible height */
+            min-height: 500px; /* Minimum height */
+        }
+    
+        .login-registration-box {
+            width: 100% !important; /* Force full width */
+            left: 0 !important; /* Remove any positioning */
+        }
+    
+        .form-box.login {
+            width: 100% !important;
+            height: 100% !important;
+            border-radius: 10px !important; /* Match container */
+            background: rgba(239, 227, 194, 0.85) !important; /* Solid background */
+        }
+    
+        /* Adjust form elements for mobile */
+        .form-box .input-box {
+            width: 90% !important;
+            max-width: 340px; /* Prevent over-stretching */
+            margin-left: auto;
+            margin-right: auto;
+        }
+    
+        .loginbtn, .registerbtn {
+            width: 90% !important;
+            max-width: 340px;
+            margin: 0 auto;
+            display: block;
+        }
+    
+        /* Center the form heading */
+        .form-box h2 {
+            margin-top: 40px;
+        }
+    }

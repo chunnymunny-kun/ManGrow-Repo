@@ -1,0 +1,240 @@
+*{
+    box-sizing: border-box;
+}
+
+:root{
+    --base-clr: #123524;
+    --line-clr: indigo;
+    --secondarybase-clr: lavenderblush;
+    --text-clr: #222533;
+    --accent-clr: #EFE3C2;
+    --secondary-text-clr: #123524;
+    --placeholder-text-clr:#3e7b27;
+    --event-clr:#FFFDF6;
+}
+
+.adminpage-strip{
+    max-width: 1400px;
+    width:100%;
+    border:1px solid blue;
+    margin: 0 auto;
+    display:flex;
+    flex-direction: column;
+    height:100%;
+    padding: 10px;
+}
+
+.adminheader h1{
+    text-align: center;
+    padding: 0.4rem 0;
+    border-bottom: 2px solid var(--base-clr);
+}
+.stats-container{
+    display: flex;
+    gap: 1rem;
+}
+
+.stats-card {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    padding:1rem;
+}
+
+.events-card-strip{
+    display:flex;
+    flex-direction: column;
+    width:100%;
+    margin-top: 10px;
+    padding:10px;
+    gap:20px;
+}
+
+.events-card {
+    position: relative;
+    height: 300px;
+    display: flex;
+    flex-direction: row;
+    font-size: 20px;
+    transition: transform 1s ease;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    background-color: var(--event-clr);
+    overflow: hidden;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.events-card:hover{
+    transform: translateY(-5px);
+}
+
+.event-thumbnail{
+    flex:1;
+}
+
+.event-thumbnail img{
+    object-fit: fill;
+    width:100%;
+    height:100%;
+}
+
+.event-description{
+    position: relative;
+    z-index: 1;
+    padding: 1rem;
+    flex: 2;
+    transition: transform 1s ease-in-out;
+}
+
+.event-description h3{
+    font-size:40px;
+    color:var(--base-clr);
+}
+
+.event-meta p{
+    font-size:24px;
+    line-height: normal;
+}
+
+.event-side-footer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    background: var(--placeholder-text-clr);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 60px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.event-side-footer i{
+    margin-right: 10px;
+    align-self: center;
+}
+
+.approve-btn, .disapprove-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    gap: 15px;
+    width: 220px;
+    height: 80px;
+    text-align: center; 
+}
+
+.approve-btn {
+    background-color: var(--placeholder-text-clr);
+    color: azure;
+}
+
+.disapprove-btn {
+    background-color: #b33628;
+    color: azure;
+}
+
+.approve-btn:hover {
+    background-color: var(--base-clr);
+}
+
+.disapprove-btn:hover {
+    background-color: #501009;
+}
+
+.event-side-footer:hover {
+    width: 100%;
+    padding-right: 30px;
+    background: rgba(157, 201, 159, 0.4); 
+}
+
+.event-side-footer:hover .event-description{
+    flex:0;
+}
+
+
+.event-side-footer .action-buttons {
+    display: none;
+    gap: 20px;
+}
+
+.event-side-footer:hover .action-buttons {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+.event-side-footer:hover .fa-angle-double-left {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+/* modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    max-width: 600px;
+    border-radius: 8px;
+}
+
+.close-modal {
+    color: #aaa;
+    float: right;
+    text-align: end;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+    color: black;
+}
+
+.modal-submit-btn {
+    background-color: #b33628;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.modal-submit-btn:hover {
+    background-color: #8a2b1d;
+}
+
+/* Textarea styling */
+#disapproval_reason {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 100px;
+}

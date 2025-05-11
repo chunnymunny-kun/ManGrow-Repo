@@ -1,7 +1,7 @@
 <!--
 <?php
     session_start();
-
+    include 'database.php';
     if(isset($_SESSION["name"])){
         $loggeduser = $_SESSION["name"];
     }
@@ -18,12 +18,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to ManGrow</title>
+    <title>Events</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="eventform.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script type ="text/javascript" src ="app.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 </head>
 <body>
     <header>
@@ -33,7 +35,7 @@
         </form>
         <nav class = "navbar">
             <a href="about.php">About</a>
-            <a href="events.php">Events</a>
+            <a href="events.php" class="active">Events</a>
             <a href="leaderboards.php">Leaderboards</a>
             <?php 
             if (isset($_SESSION["name"])) {
@@ -61,7 +63,7 @@
                 </button>
             </li>
             <hr>
-            <li class="active">
+            <li>
                 <a href="index.php" tabindex="-1">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M240-200h120v-200q0-17 11.5-28.5T400-440h160q17 0 28.5 11.5T600-400v200h120v-360L480-740 240-560v360Zm-80 0v-360q0-19 8.5-36t23.5-28l240-180q21-16 48-16t48 16l240 180q15 11 23.5 28t8.5 36v360q0 33-23.5 56.5T720-120H560q-17 0-28.5-11.5T520-160v-200h-80v200q0 17-11.5 28.5T400-120H240q-33 0-56.5-23.5T160-200Zm320-270Z"/></svg>
                     <span>Home</span>
@@ -125,6 +127,7 @@
                     <?php
                 }
             ?>
+        </ul>
     </aside>
     <main>
         <?php if(!empty($_SESSION['response'])): ?>
@@ -142,7 +145,7 @@
             <div class="details-box">
                 <?php
                 if(isset($_SESSION['profile_image']) && !empty($_SESSION['profile_image'])) {
-                        echo '<img src="'.$_SESSION['profile_image'].'" alt="Profile Image" class="big-profile-icon">';
+                        echo '<img src="'.$_SESSION['profile_image'].'" alt='.$_SESSION['profile_image'].' class="big-profile-icon">';
                     } else {
                         echo '<div class="big-default-profile-icon"><i class="fas fa-user"></i></div>';
                     }
@@ -154,158 +157,101 @@
                 <div class="profile-link-container">
                     <a href="profileform.php" class="profile-link">Edit Profile <i class="fa fa-angle-double-right"></i></a>
                 </div>
-        </div>
+                </div>
         <button type="button" name="logoutbtn" onclick="window.location.href='logout.php';">Log Out <i class="fa fa-sign-out" aria-hidden="true"></i></button>
         </div>
-        <div class= "home-container">
-            <section class="s1">
-            <div class ="background-img"><img src="images/mangrove.webp" alt ="Mangrove">
-            <h1>ManGrow: Mangrove Conservation and Eco-Tracking System with 2D Mapping</h1>
-            <button type="button" class="abt-project" onclick="window.location.href='about.php';"><span class="abt-project-span"></span>About Project</button>
-            </div>
-            </section>
-            <br>
-            <section class="s2">
-            <div class="one">
-                <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. 
-                    We use technology such as GIS-powered mapping with eco-tracking features and promote community engagement to establish sustainable mangrove conservation. 
-                    The technology enables mangrove ecosystem protection and strengthens local populations so they actively engage in conservation work.</p>
+        <!-- events form page container-->
+        <div class="another-event-form-container">
+            <h2>Create New Event</h2>
+            <form id="event-creation-form" enctype="multipart/form-data" action="uploadevent.php" method="post">
+                <!-- Program Type -->
+                <div class="form-group">
+                    <label for="program-type">Program Type*</label>
+                    <select id="program-type" name="program_type" required>
+                        <option value="">Select program type</option>
+                        <option value="Status Report">Status Report</option>
+                        <option value="Tree Planting">Tree Planting</option>
+                        <option value="Announcement">Announcement</option>
+                    </select>
                 </div>
-            </section>
-            <section class="s3">
-            <div class="two">
-            <div class="community-hub">
-                <div class="hub-grid">
-                    <!-- About -->
-                    <div class="grid-item" data-modal="modal-one">
-                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
-                        <div class="item-content">
-                            <h3>Community News</h3>
-                            <p>Latest updates and announcements</p>
-                            <span class="see-more">Explore →</span>
-                        </div>
-                    </div>
-                    <!-- About -->
-                    <div class="grid-item" data-modal="modal-two">
-                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
-                        <div class="item-content">
-                            <h3>Upcoming Events</h3>
-                            <p>Join our next gathering</p>
-                            <span class="see-more">Explore →</span>
-                        </div>
-                    </div>
-                    <!-- About -->
-                    <div class="grid-item" data-modal="modal-three">
-                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
-                        <div class="item-content">
-                            <h3>Success Stories</h3>
-                            <p>Inspiring member journeys</p>
-                            <span class="see-more">Explore →</span>
-                        </div>
-                    </div>
-                    <!-- About -->
-                    <div class="grid-item" data-modal="modal-four">
-                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
-                        <div class="item-content">
-                            <h3>Helpful Resources</h3>
-                            <p>Tools and guides</p>
-                            <span class="see-more">Explore →</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Modal for second section -->
-            <div class="modal" id="modal-template">
-                <div class="modal-content">
-                    <span class="close-modal">&times;</span>
-                    <div class="modal-body">
-                        <!-- Content will be added here via JavaScript -->
+                <!-- Title -->
+                <div class="form-group">
+                    <label for="event-title">Title of Event*</label>
+                    <input type="text" id="event-title" name="title" required>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="event-description">Description*</label>
+                    <textarea id="event-description" name="description" rows="4" required></textarea>
+                </div>
+
+                <!-- Organization -->
+                <div class="form-group">
+                    <label for="organization">Organization*</label>
+                    <input type="text" id="organization" name="organization" value="<?= $_SESSION['organization'] ?? '' ?>" <?= isset($_SESSION['organization']) ? 'readonly' : '' ?> required>
+                </div>
+
+                <!-- Thumbnail -->
+                <div class="form-group">
+                    <label for="thumbnail">Thumbnail (Image)*</label>
+                    <input type="file" id="thumbnail" name="thumbnail" accept="image/*" required>
+                    <div class="image-preview" id="thumbnail-preview"></div>
+                </div>
+
+                <!-- Location Fields -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="venue">Venue*</label>
+                        <input type="text" id="venue" name="venue" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="barangay">Barangay*</label>
+                        <input type="text" id="barangay" name="barangay" required>
                     </div>
                 </div>
-            </div>
-            </section>
-            <section class="s4">
-            <div class="three">
-                <div  class="three-header"><h1>Expect the latest from our community hub</h1></div>
-                <div class="programs-box">
-                    <div class="programs-details">
-                        <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City/Municipality*</label>
+                        <input type="text" id="city" name="city" required>
                     </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
+                    
+                    <div class="form-group">
+                        <label for="area-no">Area No*</label>
+                        <input type="text" id="area-no" name="area_no" required>
                     </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
-                    </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
-                    </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
-                    </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>  
                 </div>
-            </div>
-            <div class="view-more">
-                    <button type="button" class="view-more-btn" onclick="window.location.href='project.php';">View More <span><i class="fas fa-angle-double-right"></i></span></button>
+
+                <!-- Date Fields -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="start-date">Start Date*</label>
+                        <input type="datetime-local" id="start-date" name="start_date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="end-date">End Date*</label>
+                        <input type="date" id="end-date" name="end_date" required>
+                    </div>
                 </div>
-            </section>
-            <section class="s5">
-            <div class="four">
-            <div  class="three-header"><h1>Your awareness can save the environment!</h1></div>
-            <p style="text-align:center; width:1400px; margin:1rem auto;">We at the ManGrow will encourage you to report unusual activities that might negatively affect the development of the mangroves in your area. In case of that happening, we are actively watching to ensure that your response will reach the authorities in time.</p>
-            </div>
-            </section>
+                <!-- QR Code -->
+                <div class="form-group" id="qr-code-section">
+                    <label for="barangay">QR Code(URL/Image)*</label>
+                    <input type="text" id="qrtext" name="qrtext" value="http://localhost:3000/reportform.php" required readonly>
+                    <div class="qr-preview" id="qr-preview"></div>
+                </div>
+
+                <!-- Bounty -->
+                <div class="form-group">
+                    <label for="bounty">Reward (eco-points)</label>
+                    <input type="number" id="bounty" name="bounty" min="0" value="0">
+                </div>
+
+                <button type="submit" class="submit-btn" name="submit-btn">Create Event</button>
+            </form>
         </div>
     </main>
     <footer>
@@ -333,5 +279,135 @@
                     <p>This website is developed by ManGrow. All Rights Reserved.</p>
                 </div>
             </footer>
+            <script type="text/javascript" src="events.js"></script>
+            <script>
+                document.getElementById('event-creation-form').addEventListener('submit', function(e) {
+                    const programType = document.getElementById('program-type').value;
+                    
+                    if (programType !== 'Announcement') {
+                        const canvas = document.querySelector('#qr-preview canvas');
+                        if (canvas) {
+                            const qrImageData = canvas.toDataURL('image/png');
+                            const hiddenInput = document.createElement('input');
+                            hiddenInput.type = 'hidden';
+                            hiddenInput.name = 'qr_image_data';
+                            hiddenInput.value = qrImageData;
+                            this.appendChild(hiddenInput);
+                        }
+                    }
+                    
+                    // Continue with form validation
+                    const endDate = new Date(document.getElementById('end-date').value);
+                    const startDate = new Date(document.getElementById('start-date').value);
+                    
+                    if (endDate <= startDate) {
+                        e.preventDefault();
+                        alert('End date must be after start date');
+                    }
+                });
+
+                document.getElementById('qrtext').addEventListener('input', function (e) {
+                    e.preventDefault(); // Prevent form submission
+
+                    const text = document.getElementById('qrtext').value;
+                    const qrCodeContainer = document.getElementById('qr-preview');
+
+                    // Clear any existing QR code
+                    qrCodeContainer.innerHTML = '';
+
+                    // Create a canvas element
+                    const canvas = document.createElement('canvas');
+                    qrCodeContainer.appendChild(canvas);
+
+                    // Generate the QR code on the canvas
+                    QRCode.toCanvas(canvas, text, {
+                        width: 300,
+                        margin: 1,
+                        color: {
+                            dark: '#000000', // Black
+                            light: '#ffffff' // White
+                        }
+                    }, function (error) {
+                        if (error) {
+                            console.error(error);
+                            return;
+                        }
+
+                        // Add the logo to the center of the QR code
+                        const ctx = canvas.getContext('2d');
+                        const logo = new Image();
+                        logo.src = 'images/mangrow-logo.png'; // Replace with the path to your logo image
+                        logo.onload = function () {
+                            const logoSize = 60; // Size of the logo
+                            const x = (canvas.width - logoSize) / 2;
+                            const y = (canvas.height - logoSize) / 2;
+                            ctx.drawImage(logo, x, y, logoSize, logoSize);
+                        };
+                    });
+                });
+
+                document.getElementById('event-creation-form').addEventListener('input', function () {
+                    const programType = document.getElementById('program-type').value;
+                    if (programType === 'Announcement') return;
+
+                    const title = document.getElementById('event-title').value;
+                    const organization = document.getElementById('organization').value;
+                    const venue = document.getElementById('venue').value;
+                    const barangay = document.getElementById('barangay').value;
+                    const city = document.getElementById('city').value;
+                    const areaNo = document.getElementById('area-no').value;
+
+                    const qrTextInput = document.getElementById('qrtext');
+                    const baseUrl = "http://localhost:3000/reportform.php";
+                    if (title && organization && venue && barangay && city && areaNo) {
+                    // Concatenate the values into the QR text
+                    qrTextInput.value = `${baseUrl}?programType=${encodeURIComponent(programType)}&title=${encodeURIComponent(title)}&organization=${encodeURIComponent(organization)}&venue=${encodeURIComponent(venue)}&barangay=${encodeURIComponent(barangay)}&city=${encodeURIComponent(city)}&areaNo=${encodeURIComponent(areaNo)}`;
+                    
+                    // Trigger the QR code generation
+                    qrTextInput.dispatchEvent(new Event('input'));
+                    }
+                });
+
+                // Function to reset QR code to default
+                function resetQRCode() {
+                    const qrTextInput = document.getElementById('qrtext');
+                    const qrPreview = document.getElementById('qr-preview');
+                    
+                    // Reset to default URL
+                    qrTextInput.value = "http://localhost:3000/reportform.php";
+                    
+                    // Clear the preview
+                    qrPreview.innerHTML = '';
+                }
+
+                function toggleQRCodeVisibility() {
+                    const programType = document.getElementById('program-type').value;
+                    const qrCodeSection = document.getElementById('qr-code-section');
+                    
+                    if (programType === 'Announcement') {
+                        qrCodeSection.style.display = 'none';
+                        document.getElementById('qrtext').removeAttribute('required');
+                        resetQRCode(); // Reset when hiding
+                    } else {
+                        qrCodeSection.style.display = 'block';
+                        document.getElementById('qrtext').setAttribute('required', '');
+                        // Trigger QR code generation if there's already content
+                        if (document.getElementById('event-title').value) {
+                            document.getElementById('qrtext').dispatchEvent(new Event('input'));
+                        }
+                    }
+                }
+
+                document.getElementById('program-type').addEventListener('change', function() {
+                    toggleQRCodeVisibility();
+                    
+                    if (this.value !== 'Announcement') {
+                        document.getElementById('event-creation-form').dispatchEvent(new Event('input'));
+                    }
+                });
+
+                toggleQRCodeVisibility();
+
+            </script>
 </body>
 </html>

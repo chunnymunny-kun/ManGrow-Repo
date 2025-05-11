@@ -28,9 +28,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
             header("Location: profileform.php");
             exit();
         }
-        //only requires letter and numbers 
-        if (strlen($_POST['password']) < 8 || !preg_match('/[A-Za-z]/', $_POST['password']) || !preg_match('/[0-9]/', $_POST['password'])) {
-            $_SESSION['response']['msg'] = "Password must be 8-20 chars with letters and numbers";
+        
+        // Updated password requirements (allows special chars)
+        if (strlen($_POST['password']) < 8) {
+            $_SESSION['response']['msg'] = "Password must be at least 8 characters long";
+            header("Location: profileform.php");
+            exit();
+        }
+        
+        // Check for at least one letter and one number (special chars optional)
+        if (!preg_match('/[A-Za-z]/', $_POST['password']) || !preg_match('/[0-9]/', $_POST['password'])) {
+            $_SESSION['response']['msg'] = "Password must contain at least one letter and one number";
+            header("Location: profileform.php");
+            exit();
+        }
+        
+        // Optional: Add maximum length check
+        if (strlen($_POST['password']) > 128) {
+            $_SESSION['response']['msg'] = "Password cannot exceed 128 characters";
             header("Location: profileform.php");
             exit();
         }

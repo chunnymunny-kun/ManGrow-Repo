@@ -25,7 +25,6 @@ function loginme($email, $password) {
                 $_SESSION["barangay"] = $row["barangay"];
                 $_SESSION["organization"] = $row["organization"];
                 $_SESSION["bio"] = $row["bio"];
-
                 $_SESSION['response'] = [
                     'status' => 'success',
                     'msg' => 'Login successful! Welcome back.'

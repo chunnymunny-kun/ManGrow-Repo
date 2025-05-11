@@ -18,7 +18,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to ManGrow</title>
+    <title>Leaderboards</title>
     <link rel="stylesheet" href="style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
@@ -34,7 +34,7 @@
         <nav class = "navbar">
             <a href="about.php">About</a>
             <a href="events.php">Events</a>
-            <a href="leaderboards.php">Leaderboards</a>
+            <a href="leaderboards.php" class="active">Leaderboards</a>
             <?php 
             if (isset($_SESSION["name"])) {
                 // Show profile icon when logged in
@@ -54,14 +54,14 @@
         </header>
     <aside id="sidebar" class="close">  
         <ul>
-            <li>
+        <li>
                 <span class="logo"><i class='bx bxs-leaf'></i>ManGrow</span>
                 <button onclick= "SidebarToggle()"id="toggle-btn" class="rotate">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m313-480 155 156q11 11 11.5 27.5T468-268q-11 11-28 11t-28-11L228-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T468-692q11 11 11 28t-11 28L313-480Zm264 0 155 156q11 11 11.5 27.5T732-268q-11 11-28 11t-28-11L492-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T732-692q11 11 11 28t-11 28L577-480Z"/></svg>
                 </button>
             </li>
             <hr>
-            <li class="active">
+            <li>
                 <a href="index.php" tabindex="-1">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M240-200h120v-200q0-17 11.5-28.5T400-440h160q17 0 28.5 11.5T600-400v200h120v-360L480-740 240-560v360Zm-80 0v-360q0-19 8.5-36t23.5-28l240-180q21-16 48-16t48 16l240 180q15 11 23.5 28t8.5 36v360q0 33-23.5 56.5T720-120H560q-17 0-28.5-11.5T520-160v-200h-80v200q0 17-11.5 28.5T400-120H240q-33 0-56.5-23.5T160-200Zm320-270Z"/></svg>
                     <span>Home</span>
@@ -125,6 +125,7 @@
                     <?php
                 }
             ?>
+        </ul>
     </aside>
     <main>
         <?php if(!empty($_SESSION['response'])): ?>
@@ -154,158 +155,8 @@
                 <div class="profile-link-container">
                     <a href="profileform.php" class="profile-link">Edit Profile <i class="fa fa-angle-double-right"></i></a>
                 </div>
-        </div>
+                </div>
         <button type="button" name="logoutbtn" onclick="window.location.href='logout.php';">Log Out <i class="fa fa-sign-out" aria-hidden="true"></i></button>
-        </div>
-        <div class= "home-container">
-            <section class="s1">
-            <div class ="background-img"><img src="images/mangrove.webp" alt ="Mangrove">
-            <h1>ManGrow: Mangrove Conservation and Eco-Tracking System with 2D Mapping</h1>
-            <button type="button" class="abt-project" onclick="window.location.href='about.php';"><span class="abt-project-span"></span>About Project</button>
-            </div>
-            </section>
-            <br>
-            <section class="s2">
-            <div class="one">
-                <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. 
-                    We use technology such as GIS-powered mapping with eco-tracking features and promote community engagement to establish sustainable mangrove conservation. 
-                    The technology enables mangrove ecosystem protection and strengthens local populations so they actively engage in conservation work.</p>
-                </div>
-            </section>
-            <section class="s3">
-            <div class="two">
-            <div class="community-hub">
-                <div class="hub-grid">
-                    <!-- About -->
-                    <div class="grid-item" data-modal="modal-one">
-                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
-                        <div class="item-content">
-                            <h3>Community News</h3>
-                            <p>Latest updates and announcements</p>
-                            <span class="see-more">Explore →</span>
-                        </div>
-                    </div>
-                    <!-- About -->
-                    <div class="grid-item" data-modal="modal-two">
-                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
-                        <div class="item-content">
-                            <h3>Upcoming Events</h3>
-                            <p>Join our next gathering</p>
-                            <span class="see-more">Explore →</span>
-                        </div>
-                    </div>
-                    <!-- About -->
-                    <div class="grid-item" data-modal="modal-three">
-                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
-                        <div class="item-content">
-                            <h3>Success Stories</h3>
-                            <p>Inspiring member journeys</p>
-                            <span class="see-more">Explore →</span>
-                        </div>
-                    </div>
-                    <!-- About -->
-                    <div class="grid-item" data-modal="modal-four">
-                        <div class="item-image" style="background-image: url(images/mangrove-conserver-two.jpg);"></div>
-                        <div class="item-content">
-                            <h3>Helpful Resources</h3>
-                            <p>Tools and guides</p>
-                            <span class="see-more">Explore →</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal for second section -->
-            <div class="modal" id="modal-template">
-                <div class="modal-content">
-                    <span class="close-modal">&times;</span>
-                    <div class="modal-body">
-                        <!-- Content will be added here via JavaScript -->
-                    </div>
-                </div>
-            </div>
-            </section>
-            <section class="s4">
-            <div class="three">
-                <div  class="three-header"><h1>Expect the latest from our community hub</h1></div>
-                <div class="programs-box">
-                    <div class="programs-details">
-                        <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
-                    </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
-                    </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
-                    </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
-                    </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>
-                    </div>
-                    <div class="programs-details">
-                    <div class="programs-img"><img src="images/mangrove.webp" alt="Mangrove"></div>
-                        <div class="programs-desc">
-                            <h4>Program 1</h4>
-                            <div class="programs-tags">
-                            <h5>News</h5><h5>Article</h5>
-                            </div>
-                            <p>ManGrow exists to bring modern technology integration with environmental stewardship for mangrove conservation. overflow: hidden; overflow: hidden; overflow: hidden;</p>
-                            <a href="#">Learn More >></a>
-                        </div>  
-                </div>
-            </div>
-            <div class="view-more">
-                    <button type="button" class="view-more-btn" onclick="window.location.href='project.php';">View More <span><i class="fas fa-angle-double-right"></i></span></button>
-                </div>
-            </section>
-            <section class="s5">
-            <div class="four">
-            <div  class="three-header"><h1>Your awareness can save the environment!</h1></div>
-            <p style="text-align:center; width:1400px; margin:1rem auto;">We at the ManGrow will encourage you to report unusual activities that might negatively affect the development of the mangroves in your area. In case of that happening, we are actively watching to ensure that your response will reach the authorities in time.</p>
-            </div>
-            </section>
         </div>
     </main>
     <footer>

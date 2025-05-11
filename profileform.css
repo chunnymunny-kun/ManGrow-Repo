@@ -130,7 +130,7 @@
 .upload-btn, .save-btn {
     padding: 10px 20px;
     background: var(--base-clr);
-    color: white;
+    color: azure;
     border: none;
     border-radius: 4px;
     cursor: pointer;
